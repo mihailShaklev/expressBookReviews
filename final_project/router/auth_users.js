@@ -64,7 +64,26 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
       res.send({"message": "Book doesn`t exist!"});
     }
   
-    res.send(books[isbn]["reviews"]);
+    res.send(books[isbn]);
+});
+
+// Delete a book review
+regd_users.delete('/auth/review/:isbn', (req, res) => {
+    let isbn = req.params.isbn;
+    let username = req.session.authorization.username;
+
+    if (books[isbn]){
+      
+        delete books[isbn]["reviews"][username];
+        
+      } else {
+
+        res.send({"message": "Book doesn`t exist!"});
+
+      }
+    
+      res.send(books[isbn]);
+
 });
 
 module.exports.authenticated = regd_users;
