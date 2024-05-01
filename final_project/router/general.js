@@ -48,8 +48,26 @@ public_users.get('/',function (req, res) {
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
 
-  let isbn = req.params.isbn;
-  res.send(books[parseInt(isbn)]);
+    let promise = new Promise((resolve, reject) => {
+        let isbn = req.params.isbn;
+
+        try{
+
+            let result = books[parseInt(isbn)];
+            resolve(result);
+
+        } catch (error){
+
+            reject(error);
+
+        }
+
+    });
+
+    promise.then(
+        (result) => res.send(result),
+        (error) => res.send("Error finding book.")
+    )
 
  });
   
