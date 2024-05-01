@@ -73,15 +73,35 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  let author = req.params.author;
-  let result = {};
-  for (const key in books){
-    if(books[key]["author"] === author){
-        result = books[key];
-        break;
-    }
-  }
-  res.send(result);
+
+    let promise = new Promise((resolve, reject) => {
+
+        try{
+
+            let author = req.params.author;
+            let result = {};
+            for (const key in books){
+                if(books[key]["author"] === author){
+                    result = books[key];
+                    break;
+                }
+            }
+            resolve(result);
+
+        } catch(error){
+
+            reject(error);
+
+        }
+
+    });
+
+    promise.then(
+
+        (result) => res.send(result),
+        (error) => res.send("Error finding author.")
+    )
+  
 });
 
 // Get all books based on title
