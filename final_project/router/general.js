@@ -23,7 +23,25 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
 
-    res.send(JSON.stringify(books, null, 4));
+    let promise = new Promise((resolve, reject) => {
+
+        try{
+
+            let result = JSON.stringify(books, null, 4);
+            resolve(result);
+
+        } catch(error){
+
+            reject(error);
+
+        }
+
+    });
+
+    promise.then(
+        (result) => res.send(result),
+        (error) => res.send("Error finding books.")
+    )
 
 });
 
